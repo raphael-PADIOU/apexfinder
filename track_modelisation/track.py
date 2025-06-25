@@ -22,7 +22,7 @@ class Track:
             return None
 
     @staticmethod
-    def smooth_border(border_points, smoothing=5.0, num_points=500):
+    def smooth_line(border_points, smoothing=5.0, num_points=500):
         border_points = np.array(border_points)
         x, y = border_points[:, 0], border_points[:, 1]
         tck, _ = splprep([x, y], s=smoothing, per=True)
@@ -76,8 +76,8 @@ class Track:
         if not np.allclose(left_borders[0], left_borders[-1]):
             left_borders.append(left_borders[0])
 
-        right_borders_smooth = Track.smooth_border(right_borders)
-        left_borders_smooth = Track.smooth_border(left_borders[::-1])
+        right_borders_smooth = Track.smooth_line(right_borders)
+        left_borders_smooth = Track.smooth_line(left_borders[::-1])
         return right_borders_smooth, left_borders_smooth
 
     @staticmethod
@@ -113,3 +113,11 @@ class Track:
             plt.axis('equal')
             plt.legend()
             plt.show()
+
+    def greedy_optimized_trajectory(self):
+        borders = self.borders
+        
+
+
+    
+

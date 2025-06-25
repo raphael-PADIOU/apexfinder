@@ -36,26 +36,17 @@ class Car:
         self.set_position(*closest_point)
 
     def move_along_the_centerline(self, track, distance):
-        # Trouver le point suivant sur la centerline
         current_point = Point(self.position)
         centerline_points = track.centerline
         
-        # Trouver l'index du point le plus proche
         distances = [current_point.distance(Point(pt)) for pt in centerline_points]
         current_index = np.argmin(distances)
         
-        # Calculer le prochain index (en boucle)
         next_index = (current_index + 1) % len(centerline_points)
         next_point = centerline_points[next_index]
         
-        # Calculer la direction vers le prochain point
-        direction = np.array(next_point) - self.position
-        direction_norm = np.linalg.norm(direction)
-        
-        if direction_norm > 0:
-            # Normaliser la direction et multiplier par la distance
-            direction = direction / direction_norm * distance
-            self.position += direction
+        self.set_position(*next_point)
+        self.set_angle(np.arctan2(next_point[1] - current_point.y, next_point[0] - current_point.x))
 
     def basic_mvmnt_along_the_centerline(self, track, distance):        
         x, y = track.polygon.exterior.xy
@@ -76,6 +67,4 @@ class Car:
         plt.title('Car Movement Along Track Centerline')    
         plt.show()
 
-
-
-
+    
